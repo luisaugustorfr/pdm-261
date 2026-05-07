@@ -1,0 +1,66 @@
+import 'dart:convert';
+
+// Classe Dependente
+class Dependente {
+  String _nome;
+
+  Dependente(this._nome);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'nome': _nome,
+    };
+  }
+}
+
+// Classe Funcionario
+class Funcionario {
+  String _nome;
+  List<Dependente> _dependentes;
+
+  Funcionario(this._nome, this._dependentes);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'nome': _nome,
+      'dependentes': _dependentes.map((d) => d.toJson()).toList(),
+    };
+  }
+}
+
+// Classe EquipeProjeto
+class EquipeProjeto {
+  String _nomeProjeto;
+  List<Funcionario> _funcionarios;
+
+  EquipeProjeto(this._nomeProjeto, this._funcionarios);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'nomeProjeto': _nomeProjeto,
+      'funcionarios': _funcionarios.map((f) => f.toJson()).toList(),
+    };
+  }
+}
+
+void main() {
+  // 1. Criar Dependentes
+  var dep1 = Dependente("Ana");
+  var dep2 = Dependente("Carlos");
+  var dep3 = Dependente("Marina");
+  var dep4 = Dependente("João");
+
+  // 2. Criar Funcionários e associar dependentes
+  var func1 = Funcionario("Ricardo", [dep1, dep2]);
+  var func2 = Funcionario("Fernanda", [dep3]);
+  var func3 = Funcionario("Lucas", [dep4]);
+
+  // 3. Lista de funcionários
+  var listaFuncionarios = [func1, func2, func3];
+
+  // 4. Criar equipe de projeto
+  var equipe = EquipeProjeto("Sistema Mobile", listaFuncionarios);
+
+  // 5. Imprimir JSON formatado (bonito pra print)
+  print(JsonEncoder.withIndent('  ').convert(equipe.toJson()));
+}
